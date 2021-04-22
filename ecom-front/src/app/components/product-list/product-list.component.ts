@@ -29,6 +29,7 @@ export class ProductListComponent implements OnInit {
       this.listProducts();
     });
   }
+  
 
   
   listProducts() {

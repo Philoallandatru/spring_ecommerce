@@ -9,12 +9,17 @@ import { ProductCategory } from '../common/product-category';
   providedIn: 'root'
 })
 export class ProductService {
-
   private baseUrl = "http://localhost:8080/api/products";
   
   private searchUrl = "http://localhost:8080/api/product-category";
 
   constructor(private httpClient: HttpClient) { }
+
+  getProduct(theProductId: number): Observable<Product> {
+    const ProductUrl = `${this.baseUrl}/${theProductId}`
+    return this.httpClient.get<Product>(ProductUrl);
+  }
+
 
 
   // returns an observable, map the json data from spring date rest to product array
