@@ -20,19 +20,29 @@ export class ProductService {
   // returns an observable, map the json data from spring date rest to product array
   getProductList(theCategoryId: number): Observable<Product[]> {
 
-    // @todo: need to build url based on category
+    //  need to build url based on category
     const searchUrl =  `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
-
-    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    );
-  }
+    return this.getProducts(searchUrl);
+ }
 
   getProductCategories() {
     return this.httpClient.get<GetResponseProductCategory>(this.searchUrl).pipe(
 
       // map the json data from spring data rest to productCategory array
       map(response => response._embedded.productCategory)
+    );
+  }
+
+  searchProducts(theKeyword: string): Observable<Product[]> {
+    //need to build url based on keyword
+    const searchUrl =  `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
+
+    return this.getProducts(searchUrl);
+  }
+
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response._embedded.products)
     );
   }
 }

@@ -1,0 +1,12 @@
+<div class="form-header" onsubmit="return false;" method="GET">
+
+    <input #myInput 
+        class="au-input au-input-xl"
+        type="text" 
+        name="search" 
+        placeholder="搜索商品"
+        (keyup.enter)="doSearch(myInput.value)"    />
+    <button class="au-btn-submit" (click)="doSearch(myInput.value)">
+        搜索
+    </button>
+</div>
