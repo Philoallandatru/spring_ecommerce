@@ -10,7 +10,7 @@ import { ProductCategory } from '../common/product-category';
 })
 export class ProductService {
   private baseUrl = "http://localhost:8080/api/products";
-  
+
   private searchUrl = "http://localhost:8080/api/product-category";
 
   constructor(private httpClient: HttpClient) { }
@@ -26,9 +26,9 @@ export class ProductService {
   getProductList(theCategoryId: number): Observable<Product[]> {
 
     //  need to build url based on category
-    const searchUrl =  `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
     return this.getProducts(searchUrl);
- }
+  }
 
   getProductCategories() {
     return this.httpClient.get<GetResponseProductCategory>(this.searchUrl).pipe(
@@ -40,7 +40,7 @@ export class ProductService {
 
   searchProducts(theKeyword: string): Observable<Product[]> {
     //need to build url based on keyword
-    const searchUrl =  `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
 
     return this.getProducts(searchUrl);
   }
@@ -50,12 +50,40 @@ export class ProductService {
       map(response => response._embedded.products)
     );
   }
+
+  getProductListPaginate(thePage: number,
+    thePageSize: number,
+    theCategoryId: number): Observable<GetResponseProducts> {
+
+    // need to build URL based on category id, page and size 
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
+      + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
+
+  searchProductPaginate(thePage: number,
+    theKeyword: string,
+    thePageSize: number): Observable<GetResponseProducts> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`
+      + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
 }
+
+
 
 // unwraos the json from spring date rest _embedded entry
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number,
   }
 }
 

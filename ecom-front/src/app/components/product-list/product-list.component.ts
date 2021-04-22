@@ -10,16 +10,25 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Product[];
-  currentCategoryId: number;
+  products: Product[] = [];
+  currentCategoryId: number = 1;
   currentCategoryName: string;
-  searchMode: boolean;
+  searchMode: boolean = false;
+  previousKeyword: string = null;
+
+  previousCategoryId: number = 1;
+
+  // propertes for paginate
+  thePageNumber: number = 1;
+  thePageSize: number = 10;
+  theTotalElements: number = 0;
+
 
 
 
   // inject product service
-  constructor(private ProductService: ProductService, 
-              private route: ActivatedRoute) {  }
+  constructor(private productService: ProductService,
+    private route: ActivatedRoute) { }
 
 
 
@@ -29,9 +38,9 @@ export class ProductListComponent implements OnInit {
       this.listProducts();
     });
   }
-  
 
-  
+
+
   listProducts() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     if (this.searchMode) {
@@ -44,11 +53,14 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
     // console.log("searching" + theKeyword);
-    this.ProductService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+
+    if (this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+    this.previousKeyword = theKeyword;
+
+    this.productService.searchProductPaginate(this.thePageNumber - 1, theKeyword, this.thePageSize)
+      .subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -64,14 +76,43 @@ export class ProductListComponent implements OnInit {
     } else {
       // not category id available, default to category id is 1
       this.currentCategoryId = 1;
+
       this.currentCategoryName = 'Books';
     }
 
-    this.ProductService.getProductList(this.currentCategoryId).subscribe( // method is invoked once you subscribe
-      data => {
-        this.products = data; // asign results to the product array
-      }
-    )
+    /* 
+    check if we have a different category than previous 
+    Notes: angular will resuse a component if it is currently being viewed 
+    if we have a different category id than previous, reset to 1
+    */
+
+    if (this.previousCategoryId != this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+    console.log(`currentCategoryId=${this.currentCategoryId}`);
+
+
+
+    this.productService.getProductListPaginate(this.thePageNumber - 1,
+      this.thePageSize,
+      this.currentCategoryId).subscribe(this.processResult());
+  }
+
+  private processResult() {
+    return data => {
+      this.products = data._embedded.products;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    };
+  }
+
+  updatePageSize(pageSize: number) {
+    this.thePageSize = pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
   }
 
 }
