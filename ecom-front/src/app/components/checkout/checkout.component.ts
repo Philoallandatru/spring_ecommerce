@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { XenoShopFormService } from 'src/app/services/xeno-shop-form.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,7 +13,12 @@ export class CheckoutComponent implements OnInit {
   totalPrice: number = 0.0;
   totalQuantity: number = 0;
 
-  constructor(private formBuilder: FormBuilder) { }
+  // credit card year and month
+  creditCardYears: number[] = [];
+  creditCardMonths: number[] = [];
+
+  constructor(private formBuilder: FormBuilder,
+              private xenoshopFromService: XenoShopFormService) { }
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -48,6 +54,20 @@ export class CheckoutComponent implements OnInit {
     }
 
     );
+
+
+    // popluate credit card month and year\
+    const startYear: number = new Date().getMonth() + 1;
+    this.xenoshopFromService.getCreditCardMonths(startYear).subscribe(
+      data => {
+        this.creditCardMonths = data;
+      }
+    );
+    this.xenoshopFromService.getcreditCardYears().subscribe(
+      data => {
+        this.creditCardYears = data;
+      }
+    );
   }
 
   onSubmit() {
@@ -62,5 +82,23 @@ export class CheckoutComponent implements OnInit {
       this.checkoutFormGroup.controls.billingAddress.reset();
     }
   } 
+
+  handleMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(creditCardFormGroup.value.expirationYear);
+
+    let startMonth: number;
+    if (currentYear == selectedYear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+    console.log("year change");
+    this.xenoshopFromService.getCreditCardMonths(startMonth).subscribe(data => this.creditCardMonths = data);
+
+
+
+  }
 
 }
