@@ -13,6 +13,12 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <input formControlName="firstName" type="text">
+                                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="firstName.errors.required || firstName.errors.notOnlyWhitespace">
+                                        需要输入名
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -23,6 +29,12 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <input formControlName="lastName" type="text">
+                                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger mt-1">
+
+                                    <div *ngIf="lastName.errors.required || lastName.errors.notOnlyWhitespace">
+                                        需要输入姓
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -33,6 +45,14 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <input formControlName="email" type="text">
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="email.errors.required">
+                                        需要输入邮箱
+                                    </div>
+                                    <div *ngIf="email.errors.pattern">
+                                        请输入正确格式的邮箱
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -47,7 +67,8 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <select formControlName="country" (change)="getStates('shippingAddress')">
-                                    <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}</option>
+                                    <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -58,7 +79,6 @@
                             <div class="input-space">
                                 <select formControlName="state" class="formselect">
                                     <option *ngFor="let state of shippingAddressStates">{{state.name}}</option>
-                                    <option>TO dO</option>
                                 </select>
                             </div>
                         </div>
@@ -66,7 +86,17 @@
                     <div class="row">
                         <div class="col-md-2"><label>街道</label></div>
                         <div class="col-md-9">
-                            <div class="input-space"><input formControlName="street" type="text"></div>
+                            <div class="input-space">
+                                <input formControlName="street" type="text">
+                                <div *ngIf="shippingAddressStreet.invalid && (shippingAddressStreet.dirty || shippingAddressStreet.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressStreet.errors.required || shippingAddressStreet.errors.notOnlyWhitespace">
+                                        需要输入街道
+                                    </div>
+                                    <div *ngIf="shippingAddressStreet.errors.minlength">
+                                        街道至少有2个字符
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -76,6 +106,14 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <input formControlName="city" type="text">
+                                <div *ngIf="shippingAddressCity.invalid && (shippingAddressCity.dirty || shippingAddressCity.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressCity.errors.required || shippingAddressCity.errors.notOnlyWhitespace">
+                                        需要输入城市
+                                    </div>
+                                    <div *ngIf="shippingAddressCity.errors.minlength">
+                                        城市至少有两个字符
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -85,7 +123,15 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="zipcode" type="number">
+                                <input formControlName="zipCode" type="text">
+                                <div *ngIf="shippingAddressZipCode.invalid && (shippingAddressZipCode.dirty || shippingAddressZipCode.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressZipCode.errors.required || shippingAddressZipCode.errors.notOnlyWhitespace">
+                                        需要输入邮编
+                                    </div>
+                                    <div *ngIf="shippingAddressZipCode.errors.minlength">
+                                        邮编至少有两个字符
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,9 +140,9 @@
                 <!-- add check box to copy shipping to billing -->
                 <div class="input-space form-check">
                     <label class="au-checkbox">
-                    <input type="checkbox" (change)="copyShippingToBilling($event)">
-                    <span class="au-checkmark"></span>收货地址和账单地址相同
-                </label>
+                        <input type="checkbox" (change)="copyShippingToBilling($event)">
+                        <span class="au-checkmark"></span>收货地址和账单地址相同
+                    </label>
                 </div>
 
                 <!-- billing  -->
@@ -107,7 +153,8 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <select formControlName="country" (change)="getStates('billingAddress')">
-                                    <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}</option>
+                                    <option [ngValue]="country" *ngFor="let country of countries">{{country.name}}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -116,7 +163,7 @@
                         <div class="col-md-2"><label>省份</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="state" >
+                                <select formControlName="state">
                                     <option *ngFor="let state of billingAddressStates">{{state.name}}</option>
                                 </select>
                             </div>
@@ -125,7 +172,18 @@
                     <div class="row">
                         <div class="col-md-2"><label>街道</label></div>
                         <div class="col-md-9">
-                            <div class="input-space"><input formControlName="street" type="text"></div>
+                            <div class="input-space">
+                                <input formControlName="street" type="text">
+                                <div *ngIf="shippingAddressStreet.invalid && (shippingAddressStreet.dirty || shippingAddressStreet.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressStreet.errors.required || shippingAddressStreet.errors.notOnlyWhitespace">
+                                        需要输入街道
+                                    </div>
+                                    <div *ngIf="shippingAddressStreet.errors.minlength">
+                                        街道至少有2个字符
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="row">
@@ -135,6 +193,14 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <input formControlName="city" type="text">
+                                <div *ngIf="shippingAddressCity.invalid && (shippingAddressCity.dirty || shippingAddressCity.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressCity.errors.required || shippingAddressCity.errors.notOnlyWhitespace">
+                                        需要输入城市
+                                    </div>
+                                    <div *ngIf="shippingAddressCity.errors.minlength">
+                                        城市至少有两个字符
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -144,7 +210,15 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="zipcode" type="number">
+                                <input formControlName="zipCode" type="text">
+                                <div *ngIf="shippingAddressZipCode.invalid && (shippingAddressZipCode.dirty || shippingAddressZipCode.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="shippingAddressZipCode.errors.required || shippingAddressZipCode.errors.notOnlyWhitespace">
+                                        需要输入邮编
+                                    </div>
+                                    <div *ngIf="shippingAddressZipCode.errors.minlength">
+                                        邮编至少有两个字符
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -166,13 +240,30 @@
                                     <option>Mastercard</option>
                                     <option>银联</option>
                                 </select>
+
+                                <div *ngIf="creditCardType.invalid && (creditCardType.dirty || creditCardType.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="creditCardType.errors.required">
+                                        需要填写信用卡的类型
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><label>持卡者姓名</label></div>
                         <div class="col-md-9">
-                            <div class="input-space"><input formControlName="nameOnCard" type="text"></div>
+                            <div class="input-space">
+                                <input formControlName="nameOnCard" type="text">
+                                <div *ngIf="creditCardNameOnCard.invalid && (creditCardNameOnCard.dirty || creditCardNameOnCard.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="creditCardNameOnCard.errors.required || creditCardNameOnCard.errors.notOnlyWhitespace">
+                                        需要输入姓名
+                                    </div>
+
+                                    <div *ngIf="creditCardNameOnCard.errors.minlength">
+                                        姓名至少需要有两个字
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -181,17 +272,34 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="cardNumber" type="number">
+                                <input formControlName="cardNumber" type="text">
+                                <div *ngIf="creditCardNumber.invalid && (creditCardNumber.dirty || creditCardNumber.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="creditCardNumber.errors.required">
+                                        需要输入卡号
+                                    </div>
+                                    <div *ngIf="creditCardNumber.errors.pattern">
+                                        卡号要有16位
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <label>密码</label>
+                            <label>验证码</label>
                         </div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="securityCode" type="number">
+                                <input formControlName="securityCode" type="text">
+
+                                <div *ngIf="creditCardSecurityCode.invalid && (creditCardSecurityCode.dirty || creditCardSecurityCode.touched)" class="alert alert-danger mt-1">
+                                    <div *ngIf="creditCardSecurityCode.errors.required">
+                                        需要输入密码
+                                    </div>
+                                    <div *ngIf="creditCardSecurityCode.errors.pattern">
+                                        密码要有3位
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,7 +326,7 @@
                         <div class="col-md-9">
                             <div class="input-space">
                                 <div class="input-space">
-                                    <select formControlName="expirationMonth" >
+                                    <select formControlName="expirationMonth">
                                         <option *ngFor="let month of creditCardMonths">
                                             {{month}}
                                         </option>
