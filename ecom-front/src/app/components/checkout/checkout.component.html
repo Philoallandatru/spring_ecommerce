@@ -1,0 +1,238 @@
+<div class="main-content page-m">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <form [formGroup]="checkoutFormGroup" (ngSubmit)="onSubmit()">
+
+                <!-- customer group -->
+                <div formGroupName="customer" class="form-area">
+                    <h3>顾客信息</h3>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>名</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="firstName" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>姓</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="lastName" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>邮箱</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="email" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- shipping address -->
+                <div formGroupName="shippingAddress" class="form-area">
+                    <h3>地址信息</h3>
+
+                    <div class="row">
+                        <div class="col-md-2"><label>国家</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="country">
+                                    <option>TO dO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>省份</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="province" class="formselect">
+                                    <option>TO dO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>街道</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space"><input formControlName="street" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>城市</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="city" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>邮编</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="zipcode" type="number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- add check box to copy shipping to billing -->
+                <div class="input-space form-check">
+                    <label class="au-checkbox">
+                    <input type="checkbox" (change)="copyShippingToBilling($event)">
+                    <span class="au-checkmark"></span>收货地址和账单地址相同
+                </label>
+                </div>
+
+                <!-- billing  -->
+                <div formGroupName="billingAddress" class="form-area">
+                    <h3>帐单地址</h3>
+                    <div class="row">
+                        <div class="col-md-2"><label>国家</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="country">
+                                    <option>TO dO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>省份</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="province">
+                                    <option>TO dO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>街道</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space"><input formControlName="street" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>城市</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="city" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>邮编</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="zipcode" type="number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- creddit card form -->
+
+                <!-- billing  -->
+                <div formGroupName="creditCard" class="form-area">
+                    <h3>信用卡</h3>
+                    <div class="row">
+                        <div class="col-md-2"><label>类型</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="cardType">
+                                    <option>Visa</option>
+                                    <option>Mastercard</option>
+                                    <option>银联</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"><label>持卡者姓名</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space"><input formControlName="nameOnCard" type="text"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>卡号</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="cardNumber" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>密码</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="securityCode" type="number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>过期年份</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="expirationYear" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>过期月份</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="expirationMonth" type="number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- order detail -->
+                <div class="form-area">
+                    <!-- <h3>Review Your Order</h3> -->
+                    <p>总数量： {{ totalQuantity}}</p>
+                    <p>邮费：免费</p>
+                    <p>总价: {{ totalPrice | currency: 'CNY'}}</p>
+
+                </div>
+
+                <!-- submit button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-info">购买</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
