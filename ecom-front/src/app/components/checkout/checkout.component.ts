@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { XenoShopFormService } from 'src/app/services/xeno-shop-form.service';
 import { XenoshopValidators } from 'src/app/validators/xenoshop-validators';
 
@@ -26,9 +27,12 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private xenoshopFromService: XenoShopFormService,) { }
+              private xenoshopFromService: XenoShopFormService,
+              private cardService: CartService) { }
 
   ngOnInit(): void {
+    this.reviewCartDetail();
+    
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [Validators.required, XenoshopValidators.notOnlyWhitespace]),
@@ -155,6 +159,18 @@ export class CheckoutComponent implements OnInit {
         formGroup.get('state').setValue(data[0]);
       }
     );
+  }
+
+  reviewCartDetail() {
+    // subscribe to cardService for price and quantity
+    this.cardService.totalQuantity.subscribe(
+      totalQuantity => this.totalQuantity = totalQuantity
+    );
+
+    this.cardService.totalPrice.subscribe(
+      totalPrice => this.totalPrice = totalPrice
+    );
+
   }
 
 
