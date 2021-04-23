@@ -13,20 +13,20 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
+
+  // category
   currentCategoryId: number = 1;
+  previousCategoryId: number = 1;
   currentCategoryName: string;
+
+  // search
   searchMode: boolean = false;
   previousKeyword: string = null;
 
-  previousCategoryId: number = 1;
-
   // propertes for paginate
   thePageNumber: number = 1;
-  thePageSize: number = 10;
+  thePageSize: number = 5;
   theTotalElements: number = 0;
-
-
-
 
   // inject product service
   constructor(private productService: ProductService,
@@ -72,14 +72,12 @@ export class ProductListComponent implements OnInit {
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
     if (hasCategoryId) {
-
       // get the 'id' param string, and convert to a number using the '+' symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id');
       this.currentCategoryName = this.route.snapshot.paramMap.get('name');
     } else {
       // not category id available, default to category id is 1
       this.currentCategoryId = 1;
-
       this.currentCategoryName = 'Books';
     }
 
@@ -95,8 +93,6 @@ export class ProductListComponent implements OnInit {
 
     this.previousCategoryId = this.currentCategoryId;
     console.log(`currentCategoryId=${this.currentCategoryId}`);
-
-
 
     this.productService.getProductListPaginate(this.thePageNumber - 1,
       this.thePageSize,
@@ -121,6 +117,7 @@ export class ProductListComponent implements OnInit {
   addToCard(product: Product) {
     const theCartItem = new CartItem(product)
     this.cartService.addToCart(theCartItem);
+    
   }
 
 }

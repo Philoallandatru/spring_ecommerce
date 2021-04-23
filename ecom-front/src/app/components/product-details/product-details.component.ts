@@ -11,11 +11,12 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
+  
+  product: Product = new Product();
 
   constructor(private productService: ProductService,
     private cartService: CartService,
     private route: ActivatedRoute, ) { }
-  product: Product = new Product();
 
 
   ngOnInit(): void {
@@ -36,6 +37,8 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart() {
+
+    console.log(`Adding to cart: ${this.product.name}, ${this.product.unitPrice}`);
     const theCartItem = new CartItem(this.product);
     this.cartService.addToCart(theCartItem);
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { map } from "rxjs/operators";
 import { ProductCategory } from '../common/product-category';
+import { CartItem } from '../common/cart-item';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {
-    const ProductUrl = `${this.baseUrl}/${theProductId}`
+    const ProductUrl = `${this.baseUrl}/${theProductId}`;
     return this.httpClient.get<Product>(ProductUrl);
   }
 
@@ -70,6 +71,8 @@ export class ProductService {
 
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
+
+
 }
 
 
