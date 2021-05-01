@@ -9,5 +9,6 @@
 
     <!-- if login, dislay logout -->
     <button *ngIf="isAuthenticated" (click)="logout()" class="security-btn">Logout</button>
+    <button *ngIf="isAuthenticated"  routerLink="/members"  class="security-btn">会员</button>
 
 </div>
