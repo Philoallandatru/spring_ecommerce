@@ -22,6 +22,7 @@ export class CheckoutComponent implements OnInit {
   checkoutFormGroup: FormGroup;
   totalPrice: number = 0.0;
   totalQuantity: number = 0;
+  storage: Storage = sessionStorage;
 
   // credit card year and month
   creditCardYears: number[] = [];
@@ -40,6 +41,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.reviewCartDetail();
+    const theEmail = JSON.parse(this.storage.getItem('userEmail'));
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -48,7 +50,7 @@ export class CheckoutComponent implements OnInit {
         lastName: new FormControl('',
           [Validators.required, XenoshopValidators.notOnlyWhitespace]),
 
-        email: new FormControl('',
+        email: new FormControl(theEmail,
           [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
       shippingAddress: this.formBuilder.group({
@@ -111,8 +113,6 @@ export class CheckoutComponent implements OnInit {
     console.log(this.checkoutFormGroup.get('customer').value);
     console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
 
-    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress').value.country.name);
-    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress').value.state.name);
 
 
     // 
@@ -180,6 +180,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.totalQuantity.next(0);
     // reset the form
     this.checkoutFormGroup.reset();
+    this.storage.removeItem('cartItem');
     // navigate back to the products page
     this.router.navigateByUrl("/products");
   }

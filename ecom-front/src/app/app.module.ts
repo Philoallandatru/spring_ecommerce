@@ -25,6 +25,7 @@ import {
   OktaAuthGuard
 } from '@okta/okta-angular';
 import { MembersPageComponent } from './components/members-page/members-page.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 
 const oktaConfig = Object.assign({
@@ -37,6 +38,7 @@ const oktaConfig = Object.assign({
 }, myAppConfig.oidc)
 
 const routes: Routes = [
+  {path: 'orders', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
   {path: 'members', component: MembersPageComponent, canActivate: [ OktaAuthGuard ]},
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
@@ -64,6 +66,7 @@ const routes: Routes = [
     LoginComponent,
     LoginStatusComponent,
     MembersPageComponent,
+    OrderHistoryComponent,
   ],
   imports: [
     ReactiveFormsModule,
