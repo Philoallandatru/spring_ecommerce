@@ -1,7 +1,7 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
 
-        <h4>Category: {{ currentCategoryName }}</h4>
+        <h4>类别： {{ currentCategoryName }}</h4>
         <hr>
 
 
@@ -13,7 +13,7 @@
 
                 <!-- loop over the collection of products -->
                 <div *ngFor="let tempProduct of products" class="col-md-3">
-                    <div class="product-box">
+                    <!-- <div class="product-box">
                         <a routerLink="/products/{{ tempProduct.id }}" routerLinkActive="router-link-active">
                             <img src="{{ tempProduct.imageUrl }}" class="img-responsive" />
                         </a>
@@ -27,7 +27,40 @@
                             添加到购物车
                         </button>
 
-                    </div>
+                    </div> -->
+                    <div class="card" style="width: 18rem;" >
+                        <a routerLink="/products/{{ tempProduct.id }}" routerLinkActive="router-link-active">
+                            <img src="{{ tempProduct.imageUrl }}" class="img-responsive card-img-top" />
+                        </a>
+
+                        <div class="card-body">
+                            <a routerLink="/products/{{ tempProduct.id }}" class="card-link">
+                                <p class="card-text">{{ tempProduct.name }}</p>
+                            </a>
+                            <br>
+                            <div class="price">{{ tempProduct.unitPrice | currency:'CNY'}}</div>
+                            <button class="btn-primary btn btn-sm" (click)="addToCard(tempProduct)">
+                                添加到购物车
+                            </button>
+    
+    
+                        </div>
+                        <!-- <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a routerLink="/products/{{ tempProduct.id }}" class="card-link">
+                                    <p class="card-text">{{ tempProduct.name }}</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="price">{{ tempProduct.unitPrice | currency:'CNY'}}</div>
+                            </li>
+                            <li class="list-group-item">
+                                <button class="btn-primary btn btn-sm" (click)="addToCard(tempProduct)">
+                                    添加到购物车
+                                </button>
+                            </li>
+                          </ul> -->
+                      </div>
                 </div>
 
                 <!-- if products empty display a message  -->
@@ -64,7 +97,7 @@
                                     <option>50</option>
                                 </select>
                             </div>
-                        </div>
+
                     </div>
 
                 </div>
